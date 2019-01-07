@@ -13,7 +13,7 @@ const sketch = () => {
 
   const createGrid = () => {
     const points = [];
-    const count = 50;
+    const count = 6;
     for (let x = 0; x < count; x++) {
       for (let y = 0; y < count; y++) {
         const u = x / (count - 1);
@@ -30,7 +30,7 @@ const sketch = () => {
     return points;
   }
 
-  const points = createGrid().filter(() => random.value() > 0.5);
+  const points = createGrid();
   const margin = 200;
 
   return ({ context, width, height }) => {
@@ -49,21 +49,30 @@ const sketch = () => {
       const y = lerp(margin, height - margin, v);
       const color = random.pick(palette);
 
-      // context.beginPath();
-      // context.arc(x, y,  radius * width, 0, Math.PI * 2, false);
-      context.save();
-      context.fillStyle = color;
-      // context.fill();
+      context.beginPath();
+      context.arc(x, y,  5, 0, Math.PI * 2, false);
+    //   context.save();
+      context.fillStyle = 'black';
+      context.fill();
       // context.lineWidth = 0;
       // context.strokeStyle = '#c55353';
       // context.stroke();
-      context.font = `${radius * width}px "calibri"`;
-      // context.fontStyle = 'italic';
-      context.translate(x, y);
-      context.rotate(rotation);
-      context.fillText('~', 0, 0);
-      context.restore();
     });
+    const point1 = random.pick(points);
+    const point2 = random.pick(points);
+    console.log(point1, point2);
+    context.beginPath();
+    context.moveTo(
+      lerp(margin, width - margin, point1.position[0]),
+      lerp(margin, width - margin, point1.position[1])
+    );
+    context.lineTo(
+      lerp(margin, width - margin, point2.position[0]),
+      lerp(margin, width - margin, point2.position[1])
+    );
+    context.lineWidth = 5;
+    context.strokeStyle = '#000000';
+    context.stroke();
   };
 };
 
